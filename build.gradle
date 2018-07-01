@@ -1,0 +1,119 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+defaultTasks 'clean', 'build'
+
+description = """Factory Dev Ops : Factory Report"""
+group = 'com.conveyor.'
+
+def jarName = 'FactoryBeltProduct'
+def buildNumber = System.getenv("BUILD_NUMBER")
+def workingBranch = """git rev-parse --abbrev-ref HEAD""".execute().text.trim()
+def isEmergencyRelease = workingBranch.matches("^ER.*_release") && buildNumber
+def isRelease = workingBranch.endsWith('_release') && buildNumber
+def isIntegration = workingBranch.equals('master') && buildNumber
+def isSnapshot = project.hasProperty('snapshot') && buildNumber
+
+def gitTag = """git describe --abbrev=0""".execute().text.trim()
+def (gitAbbrev, versionMajor, versionMinor, versionPatch, gaskRev) = gitTag.tokenize('\\.')
+version = "${versionMajor}.${versionMinor}"
+
+def integrationExt  = 'INT'
+def localExt        = 'LOCAL'
+def snapshotExt     = 'SNAPSHOT'
+
+def projJVen = System.getProperty('java.vendor')
+def projJVer = System.getProperty('java.version')
+def projJDK = "${projJVer} (${projJVen})"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
+task setVersion {
+  if ( buildNumber ) {
+  if ( (!gitAbbrev.equals(abbrev)) || (versionMajor==null) || (versionMinor==null) || (versionPatch==null) || (gaskRev==null) ) {
+    throw new Exception("could not determine version information")
+  }
+  if ( isSnapshot ) {
+    println "  Setting snapshot version ..."
+    version = "${version}.${buildNumber}.${snapshotExt}"
+  }
+ 
+  else {
+    println "  Setting local version ..."
+    def localBuild = "00.00.00"
+    version = "${localBuild}.${localExt}"
+  }
+    println "  buildNumber: ${buildNumber}"
+  } else {
+    version = "00.00.00.${localExt}"
+  }
+  println "  Build-Jdk: ${projJDK}"
+  println "  Working branch: ${workingBranch}"
+  println "  Git Tag: ${gitTag}"
+  println "  Version: ${version}"
+}
+compileJava.dependsOn setVersion
+
+test {
+  afterTest { TestDescriptor td, TestResult tr ->
+    println "${tr} ${td}"
+  }
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+		attributes 'Implementation-Title': 'Factory Result',
+			'Implementation-Version': '0.1.0',
+			'Main-Class': 'com.conveyor.belt.factory.RunApplication'
+	}
+	baseName = project.name + '-all'
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	with jar
+}
+build.finalizedBy(fatJar)
+
+task all(dependsOn: build) {
+}
+
+task showMoreHelp {
+  doLast {
+    
+    println " To use default tasks, execute 'gradle' or 'gradle clean build fatJar'\n"
+    println " All build artifacts are located in the following directory:"
+    println "   build/libs/applications/FactoryBeltProduct-all-<version>.jar"
+  }
+}
+help.finalizedBy showMoreHelp
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '3.5'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    // Check Artifactory repositories ...
+    mavenCentral()
+}
+
+dependencies {
+  compile (
+    'org.springframework.boot:spring-boot-starter-web:1.5.8.RELEASE',
+    'org.springframework:spring-oxm:5.0.0.RELEASE',
+    'org.freemarker:freemarker:2.3.23',
+    'org.json:json:20171018'
+  )
+}
+

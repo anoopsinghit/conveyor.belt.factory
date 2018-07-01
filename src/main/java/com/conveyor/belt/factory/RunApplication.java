@@ -63,81 +63,22 @@ public class RunApplication {
 					ProductDemo R1 = new ProductDemo( "Employee-1",map,pr);
 				      R1.start();
 				      
-				     /* RunnableDemo R2 = new RunnableDemo( "Employee-2",map,pr);
-				      R2.start();
-				      RunnableDemo R3 = new RunnableDemo( "Employee-3",map,pr);
-				      R3.start();
-					*/
 				     
-				      
-		
-				  
 				    	 System.out.println("RunApplication.main()*******"+pr.getCreatedNoOfProduct()+"***********88888888+++*****"+pr.getTotatlConsumeTime()); 
 				
 				      
-				      
-				      
-					//System.out.println("RunApplication.main()"+);
-					
+				
 				}  
 				
 	
-				
-				
-				
-		        
-		      
-				//Bolt bolt=new Bolt();
-				
-				
-				
-				
-				/*int[] marks = { 1, 1,1};
-		        // for each loop
-		        for (int num : marks) 
-		        {
-				bolt.setBolt(1);
-		        }
-				System.out.println("bolt size"+bolt.getBolt());
-				
-			} else {
-				System.out.println("Input is not supplied in a proper manner in arg list");
-			}*/
-			/* 
-			if (!isFileExists(path + File.separator + Constants.PROCESSED_FLAG)) {
-				// jenkins job will pass follwoing CMD arg if its data needs to
-				// be considered for Analytics
-				boolean publishData = (args.length > 0) && args[args.length - 1].equalsIgnoreCase("ANALYTICS");
-
-				Map<String, String> configMap = readCmdArguments(args);
-
-				if (isFileExists(path + File.separator + Constants.OUTPUT_XML)) {
-					// ROBOT Regression
-					new RobotRegressionService().processRobotRegressionResults(publishData, configMap);
-				} else {
-					// TTCN Regression
-					new TTCNRegressionService().processTTCNRegressionResults(path, publishData, configMap);
-				}
-				if (publishData) {
-					createProcessedFile(path);
-				}
-			} else {
-				System.out.println("Results are already processed");
-			}*/
 		} catch (Exception e) {
 			
 			System.out.println("Error while creating processing the factory output:\n\n" + e);
 		}
 
 	}
-
 	
 
-	/**
-	 * Debug Code: Print content of XML file
-	 * 
-	 * @param suite
-	 * @param tab
-	 */
+	
 	
 }

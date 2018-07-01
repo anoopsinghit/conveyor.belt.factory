@@ -34,7 +34,7 @@ public class ProductCreation {
 			System.out.println("Creation of the  is product=="+createdNoOfProduct+"** totatla consume tiem for 3 employees**"+totatlConsumeTime);
 			
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			}
 		}else{

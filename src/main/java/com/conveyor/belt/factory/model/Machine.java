@@ -26,14 +26,12 @@ public class Machine {
 		this.machine = this.machineSize+machine;
 	}
 	/**
-	 * 
+	 * constructor of teh class
 	 */
 	public Machine() {
-		// TODO Auto-generated constructor stub
+
 	}
-	public void initillizetMachinet(int bolt) {
-		this.machineSize=0;
-	}
+	
 	
 	public int unuseddMachine(int bolt){
 		 

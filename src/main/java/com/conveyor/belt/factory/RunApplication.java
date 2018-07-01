@@ -1,38 +1,35 @@
 package com.conveyor.belt.factory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 import com.conveyor.belt.factory.model.Bolt;
+import com.conveyor.belt.factory.model.Constants;
 import com.conveyor.belt.factory.model.Machine;
 import com.conveyor.belt.factory.model.ProductCreation;
 
 /**
- * @author anoop sngh
+ * @author anoop singh
  *
  */
 public class RunApplication { 
-	static int sCount = 1;
+	
 
 	public static void main(String[] args) throws IOException {
-
+		
 		Bolt bolt=new Bolt();
 		Machine machine=new Machine();
 
 		try {
-			//Check the input suplied  from the aggumrnt for bolt,machin and time (63seconds)  
-			
-						
 			// Check argument list at this  are already processed
-			/*if(args.length<=3){
+			if(args.length<=3){
 				for (String string : args) {
-					System.out.println("argument list is..."+string);
-				}*/
-				
-				System.out.println("Bolt quantity****="+args[0]+"***machine quantity="+args[1]+"*****buit in time="+args[1]);
-					
-				HashMap<String,Integer> map = new HashMap<String,Integer>();
-				
+					System.out.println("argument list suplied from CLI .."+string);
+			
+				}
+				System.out.println("Bolt quantity****="+args[0]+"***machine quantity="+args[1]+"*****buit in time="+args[1]);					
+				HashMap<String,Integer> map = new HashMap<String,Integer>();				
 				  map.put("totalNoBolt",Integer.valueOf(args[0])); 
 				   map.put("totalNomachne",Integer.valueOf(args[1]));
 				   map.put("totalNoseconds",Integer.valueOf(args[2]));
@@ -59,21 +56,19 @@ public class RunApplication {
 				 System.out.println("not possible to make any machine with given arg input");
 				}else{	
 					
-					
 					ProductDemo R1 = new ProductDemo( "Employee-1",map,pr);
 				      R1.start();
-				      
-				     
-				    	 System.out.println("RunApplication.main()*******"+pr.getCreatedNoOfProduct()+"***********88888888+++*****"+pr.getTotatlConsumeTime()); 
-				
-				      
-				
-				}  
-				
+				    	 
+				}
+			}else{
+			
+			}
 	
 		} catch (Exception e) {
-			
-			System.out.println("Error while creating processing the factory output:\n\n" + e);
+			PrintWriter writer = new PrintWriter(Constants.ERROR_LOG, "UTF-8");
+			e.printStackTrace(writer);
+			writer.close();
+			System.out.println("Error while creating processing the factory output error can be sseens in error_result.log:\n\n" + e);
 		}
 
 	}

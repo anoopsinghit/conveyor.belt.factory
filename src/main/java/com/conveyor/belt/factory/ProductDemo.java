@@ -31,16 +31,16 @@ class ProductDemo implements Runnable {
 	         }
 	      
 	        
-	      } catch (InterruptedException e) {
-	         System.out.println("Thread " +  threadName + " interrupted.");
+	      } catch (Exception e) {
+	         System.err.println("Thread " +  threadName + " interrupted.");
 	      }
 	      
-	      System.out.println("Thread " +  threadName + " exiting.");
+	   
 	     
 	   }
 	   
 	   public void start () {
-	      System.out.println("Starting " +  threadName );
+	   
 	      if (t == null) {
 	         t = new Thread (this, threadName);
 	         t.start ();
